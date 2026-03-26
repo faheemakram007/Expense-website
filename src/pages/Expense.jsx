@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   Tag,
   FloatButton,
   Typography,
+  message,
 } from "antd";
 import {
   PlusOutlined,
@@ -17,6 +18,7 @@ import {
 } from "@ant-design/icons";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseTable from "../components/ExpenseTable";
+import { getExpenses, createExpense, deleteExpense } from "../services/api";
 
 
 
@@ -26,21 +28,55 @@ function ExpensePage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch expenses on component mount
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    try {
+      setLoading(true);
+      const expenses = await getExpenses();
+      setData(expenses);
+    } catch (error) {
+      message.error("Failed to fetch expenses");
+    }
+  };
 
   //  Add Function
-  const handleAdd = (values) => {
-    const newData = {
-      key: Date.now(),
-      category: values.category,
-      date: values.date.format("DD-MM-YYYY"),
-      amount: `Rs ${values.amount}`,
-      paid: "Yes",
-      method: values.method,
-      desc: values.desc,
-    };
+  const handleAdd = async (values) => {
+    try {
+      const newExpense = {
+        category: values.category,
+        date: values.date.format("DD-MM-YYYY"),
+        amount: `Rs ${values.amount}`,
+        paid: "Yes",
+        method: values.method,
+        desc: values.desc,
+      };
 
-    setData([...data, newData]);
-    setIsModalOpen(false);
+      await createExpense(newExpense);
+      message.success("Expense added successfully");
+      setIsModalOpen(false);
+      fetchExpenses(); // Refresh the list
+    } catch (error) {
+      message.error("Failed to add expense");
+      console.error(error);
+    }
+  };
+
+  // Delete Function
+  const handleDelete = async (id) => {
+    try {
+      await deleteExpense(id);
+      message.success("Expense deleted successfully");
+      fetchExpenses(); // Refresh the list
+    } catch (error) {
+      message.error("Failed to delete expense");
+      console.error(error);
+    }
   };
 
   return (
@@ -101,7 +137,7 @@ function ExpensePage() {
         </div>
 
         {/*TABLE COMPONENT */}
-        <ExpenseTable data={data} setData={setData} />
+        <ExpenseTable data={data} onDelete={handleDelete} loading={loading} />
       </Card>
 
       {/* Floating Button */}

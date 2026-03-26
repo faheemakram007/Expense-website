@@ -1,6 +1,6 @@
 import { Table, Tag, Button } from "antd";
 
-function ExpenseTable({ data, setData }) {
+function ExpenseTable({ data, onDelete, loading }) {
   const columns = [
     {
       title: "Expense Category",
@@ -37,9 +37,7 @@ function ExpenseTable({ data, setData }) {
         <Button
           danger
           size="small"
-          onClick={() =>
-            setData(data.filter((item) => item.key !== record.key))
-          }
+          onClick={() => onDelete(record.id)}
         >
           Delete
         </Button>
@@ -53,6 +51,7 @@ function ExpenseTable({ data, setData }) {
       dataSource={data}
       locale={{ emptyText: "No expenses found" }}
       pagination={{ showSizeChanger: false }}
+      loading={loading}
     />
   );
 }
