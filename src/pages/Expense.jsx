@@ -40,8 +40,10 @@ function ExpensePage() {
       setLoading(true);
       const expenses = await getExpenses();
       setData(expenses);
+      setLoading(false);
     } catch (error) {
       message.error("Failed to fetch expenses");
+      console.error(error);
     }
   };
 
