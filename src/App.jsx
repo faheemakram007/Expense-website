@@ -7,22 +7,20 @@ import AppFooter from "./components/Footer";
 import Dashboard from "./pages/Dashboard";
 import Expense from "./pages/Expense";
 import Income from "./pages/Income";
+import Login from "./pages/Login";
+import PrivateRoute from "./components/PrivateRoute";
 
 const { Content } = Layout;
 
-function App() {
+// 👇 Layout wrapper bana lo
+function MainLayout() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      
-      {/* Sidebar */}
       <Sidebar />
 
       <Layout>
-        
-        {/* Header */}
         <AppHeader />
 
-        {/* Content */}
         <Content style={{ margin: "20px" }}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -31,11 +29,28 @@ function App() {
           </Routes>
         </Content>
 
-        {/* Footer */}
         <AppFooter />
-
       </Layout>
     </Layout>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      {/* Public Route */}
+      <Route path="/login" element={<Login />} />
+
+      {/* Protected Routes */}
+      <Route
+        path="/*"
+        element={
+          <PrivateRoute>
+            <MainLayout />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
   );
 }
 

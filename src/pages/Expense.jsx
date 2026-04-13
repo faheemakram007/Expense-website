@@ -18,7 +18,7 @@ import {
 } from "@ant-design/icons";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseTable from "../components/ExpenseTable";
-import { getExpenses, createExpense, deleteExpense } from "../services/api";
+import { getExpenses, createExpense, deleteExpense } from "../services/expense";
 
 
 
