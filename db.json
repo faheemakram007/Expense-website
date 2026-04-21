@@ -1,0 +1,14 @@
+{
+  "expenses": [
+    {
+      "category": "gjlsd",
+      "date": "09-04-2026",
+      "amount": "Rs 233",
+      "paid": "Yes",
+      "method": "Card",
+      "desc": "3d",
+      "id": "HHzjuIEMELM"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

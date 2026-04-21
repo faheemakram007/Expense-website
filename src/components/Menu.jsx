@@ -17,6 +17,12 @@ function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation(); // 🔥 active highlight ke liye
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  // Original menu items preserved
   const items = [
     {
       key: "/",
@@ -55,6 +61,8 @@ function Sidebar() {
       key: "7",
       icon: <LogoutOutlined />,
       label: "Logout",
+      onClick: handleLogout, // ✅ Logout fix only
+      danger: true,
     },
   ];
 
@@ -82,13 +90,11 @@ function Sidebar() {
       <hr style={{ borderColor: "#444" }} />
 
       {/* MENU text */}
-      <p style={{ marginLeft: 20, marginTop: 20, fontSize: 14 }}>
-        MENU
-      </p>
+      <p style={{ marginLeft: 20, marginTop: 20, fontSize: 14 }}>MENU</p>
 
       {/* Menu */}
       <AntMenu
-        selectedKeys={[location.pathname]} // 🔥 active page highlight
+        selectedKeys={[location.pathname]} // 🔥 active highlight
         mode="inline"
         theme="dark"
         style={{

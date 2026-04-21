@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   Tag,
   FloatButton,
   Typography,
+  message,
 } from "antd";
 import {
   PlusOutlined,
@@ -18,7 +19,7 @@ import {
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseTable from "../components/ExpenseTable";
 
-
+const API_BASE_URL = "http://localhost:3001";
 
 const { Title } = Typography;
 
@@ -26,21 +27,65 @@ function ExpensePage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch expenses on component mount
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/expenses`);
+      const expenses = await response.json();
+      setData(expenses);
+      setLoading(false);
+    } catch (error) {
+      message.error("Failed to fetch expenses");
+    }
+  };
 
   //  Add Function
-  const handleAdd = (values) => {
-    const newData = {
-      key: Date.now(),
-      category: values.category,
-      date: values.date.format("DD-MM-YYYY"),
-      amount: `Rs ${values.amount}`,
-      paid: "Yes",
-      method: values.method,
-      desc: values.desc,
-    };
+  const handleAdd = async (values) => {
+    try {
+      const newExpense = {
+        category: values.category,
+        date: values.date.format("DD-MM-YYYY"),
+        amount: `Rs ${values.amount}`,
+        paid: "Yes",
+        method: values.method,
+        desc: values.desc,
+      };
 
-    setData([...data, newData]);
-    setIsModalOpen(false);
+      const response = await fetch(`${API_BASE_URL}/expenses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newExpense),
+      });
+      message.success("Expense added successfully");
+      setIsModalOpen(false);
+      fetchExpenses(); // Refresh the list
+    } catch (error) {
+      message.error("Failed to add expense");
+      console.error(error);
+    }
+  };
+
+  // Delete Function
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/expenses/${id}`, {
+        method: "DELETE",
+      });
+      message.success("Expense deleted successfully");
+      fetchExpenses(); // Refresh the list
+    } catch (error) {
+      message.error("Failed to delete expense");
+      console.error(error);
+    }
   };
 
   return (
@@ -101,7 +146,7 @@ function ExpensePage() {
         </div>
 
         {/*TABLE COMPONENT */}
-        <ExpenseTable data={data} setData={setData} />
+        <ExpenseTable data={data} onDelete={handleDelete} loading={loading} />
       </Card>
 
       {/* Floating Button */}
