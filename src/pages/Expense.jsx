@@ -18,9 +18,8 @@ import {
 } from "@ant-design/icons";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseTable from "../components/ExpenseTable";
-import { getExpenses, createExpense, deleteExpense } from "../services/expense";
 
-
+const API_BASE_URL = "http://localhost:3001";
 
 const { Title } = Typography;
 
@@ -38,12 +37,12 @@ function ExpensePage() {
   const fetchExpenses = async () => {
     try {
       setLoading(true);
-      const expenses = await getExpenses();
+      const response = await fetch(`${API_BASE_URL}/expenses`);
+      const expenses = await response.json();
       setData(expenses);
       setLoading(false);
     } catch (error) {
       message.error("Failed to fetch expenses");
-      console.error(error);
     }
   };
 
@@ -59,7 +58,13 @@ function ExpensePage() {
         desc: values.desc,
       };
 
-      await createExpense(newExpense);
+      const response = await fetch(`${API_BASE_URL}/expenses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newExpense),
+      });
       message.success("Expense added successfully");
       setIsModalOpen(false);
       fetchExpenses(); // Refresh the list
@@ -72,7 +77,9 @@ function ExpensePage() {
   // Delete Function
   const handleDelete = async (id) => {
     try {
-      await deleteExpense(id);
+      const response = await fetch(`${API_BASE_URL}/expenses/${id}`, {
+        method: "DELETE",
+      });
       message.success("Expense deleted successfully");
       fetchExpenses(); // Refresh the list
     } catch (error) {
