@@ -2,12 +2,21 @@
   "expenses": [
     {
       "category": "gjlsd",
-      "date": "09-04-2026",
-      "amount": "Rs 233",
+      "date": "02-04-2026",
+      "amount": "Rs 23",
       "paid": "Yes",
       "method": "Card",
-      "desc": "3d",
-      "id": "HHzjuIEMELM"
+      "desc": "4",
+      "id": "_4HVD8wdo7w"
+    },
+    {
+      "category": "gjlsd",
+      "date": "04-05-2026",
+      "amount": "Rs 67",
+      "paid": "Yes",
+      "method": "Card",
+      "desc": "vnb",
+      "id": "7bnsS8fcSb8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
