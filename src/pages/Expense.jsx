@@ -16,6 +16,7 @@ import {
   ClockCircleOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseTable from "../components/ExpenseTable";
 
@@ -37,9 +38,8 @@ function ExpensePage() {
   const fetchExpenses = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/expenses`);
-      const expenses = await response.json();
-      setData(expenses);
+      const response = await axios.get(`${API_BASE_URL}/expenses`);
+      setData(response.data);
       setLoading(false);
     } catch (error) {
       message.error("Failed to fetch expenses");
@@ -58,13 +58,7 @@ function ExpensePage() {
         desc: values.desc,
       };
 
-      const response = await fetch(`${API_BASE_URL}/expenses`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newExpense),
-      });
+      await axios.post(`${API_BASE_URL}/expenses`, newExpense);
       message.success("Expense added successfully");
       setIsModalOpen(false);
       fetchExpenses(); // Refresh the list
@@ -77,9 +71,7 @@ function ExpensePage() {
   // Delete Function
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/expenses/${id}`, {
-        method: "DELETE",
-      });
+      await axios.delete(`${API_BASE_URL}/expenses/${id}`);
       message.success("Expense deleted successfully");
       fetchExpenses(); // Refresh the list
     } catch (error) {
