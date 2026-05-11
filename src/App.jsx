@@ -3,24 +3,27 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Menu";
 import AppHeader from "./components/Header";
 import AppFooter from "./components/Footer";
-
+import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Expense from "./pages/Expense";
 import Income from "./pages/Income";
 import Login from "./pages/Login";
-import PrivateRoute from "./components/PrivateRoute";
+import Register from "./pages/Registration";
 
 const { Content } = Layout;
 
-// 👇 Layout wrapper bana lo
+// Layout
 function MainLayout() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
+      {/* Sidebar */}
       <Sidebar />
 
       <Layout>
+        {/* Header */}
         <AppHeader />
 
+        {/* Content */}
         <Content style={{ margin: "20px" }}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -29,6 +32,7 @@ function MainLayout() {
           </Routes>
         </Content>
 
+        {/* Footer */}
         <AppFooter />
       </Layout>
     </Layout>
@@ -38,10 +42,11 @@ function MainLayout() {
 function App() {
   return (
     <Routes>
-      {/* Public Route */}
+      {/* Public Routes */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-      {/* Protected Routes */}
+      {/* Private Routes */}
       <Route
         path="/*"
         element={

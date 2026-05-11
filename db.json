@@ -1,14 +1,15 @@
 {
   "expenses": [
     {
-      "category": "gjlsd",
-      "date": "09-04-2026",
-      "amount": "Rs 233",
+      "category": "d",
+      "date": "30-04-2026",
+      "amount": "Rs 3",
       "paid": "Yes",
       "method": "Card",
-      "desc": "3d",
-      "id": "HHzjuIEMELM"
+      "desc": "d",
+      "id": "GVs_U_gziko"
     }
   ],
+  "income": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
