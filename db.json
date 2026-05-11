@@ -1,22 +1,13 @@
 {
   "expenses": [
     {
-      "category": "gjlsd",
-      "date": "02-04-2026",
-      "amount": "Rs 23",
+      "category": "d",
+      "date": "30-04-2026",
+      "amount": "Rs 3",
       "paid": "Yes",
       "method": "Card",
-      "desc": "4",
-      "id": "_4HVD8wdo7w"
-    },
-    {
-      "category": "gjlsd",
-      "date": "04-05-2026",
-      "amount": "Rs 67",
-      "paid": "Yes",
-      "method": "Card",
-      "desc": "vnb",
-      "id": "7bnsS8fcSb8"
+      "desc": "d",
+      "id": "GVs_U_gziko"
     }
   ],
   "income": [],

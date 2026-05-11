@@ -1,16 +1,26 @@
 import { Card, Form, Input, Button, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
 
   const onFinish = (values) => {
-    if (values.email === "admin@gmail.com" && values.password === "1234") {
-      localStorage.setItem("user", JSON.stringify(values));
-      message.success("Login successful");
+    // localStorage se user data lo
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+
+    // Check email & password
+    if (
+      savedUser &&
+      values.email === savedUser.email &&
+      values.password === savedUser.password
+    ) {
+      message.success("Login Successful");
+
+      localStorage.setItem("isLogin", true);
+
       navigate("/");
     } else {
-      message.error("Invalid credentials");
+      message.error("Invalid Email or Password");
     }
   };
 
@@ -24,29 +34,37 @@ function Login() {
         background: "#f5f7fb",
       }}
     >
-      <Card style={{ width: 350, borderRadius: "12px" }}>
+      <Card style={{ width: 400, borderRadius: "12px" }}>
         <h2 style={{ textAlign: "center" }}>Login</h2>
 
         <Form layout="vertical" onFinish={onFinish}>
+          {/* Email */}
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please enter email" }]}
           >
-            <Input />
+            <Input placeholder="Enter email" />
           </Form.Item>
 
+          {/* Password */}
           <Form.Item
             name="password"
             label="Password"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please enter password" }]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Enter password" />
           </Form.Item>
 
+          {/* Button */}
           <Button type="primary" htmlType="submit" block>
             Login
           </Button>
+
+          <p style={{ marginTop: "15px", textAlign: "center" }}>
+            Don't have an account?{" "}
+            <Link to="/register">Register</Link>
+          </p>
         </Form>
       </Card>
     </div>
